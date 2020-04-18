@@ -90,7 +90,7 @@ import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'
 
 // crud交由presenter持有
-const defaultCrud = CRUD({ title: '七牛云文件', url: 'api/qiNiuContent', crudMethod: { ...crudQiNiu }})
+const defaultCrud = CRUD({ title: '阿里云文件', url: 'api/ossContent', crudMethod: { ...crudQiNiu }})
 export default {
   components: { eForm, pagination, crudOperation, rrOperation },
   mixins: [presenter(defaultCrud), header(), crud()],
@@ -126,7 +126,7 @@ export default {
     this.crud.optShow.edit = false
   },
   methods: {
-    // 七牛云配置
+    // 阿里云配置
     doConfig() {
       const _this = this.$refs.form
       _this.init()

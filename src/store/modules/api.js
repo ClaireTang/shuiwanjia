@@ -11,8 +11,8 @@ const api = {
     imagesUploadApi: baseUrl + '/api/pictures',
     // 修改头像
     updateAvatarApi: baseUrl + '/api/users/updateAvatar',
-    // 上传文件到七牛云
-    qiNiuUploadApi: baseUrl + '/api/qiNiuContent',
+    // 上传文件到aliyun
+    qiNiuUploadApi: baseUrl + '/api/ossContent?servicer=aliyun',
 
     uploadApi: baseUrl + '/api/upload',
     // Sql 监控
