@@ -5,34 +5,105 @@
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
       <crudOperation :permission="permission" />
       <!--表单组件-->
-      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="500px">
+      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="700px">
         <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
-          <el-form-item label="门店名称" prop="name">
-            <el-input v-model="form.name" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="门店简介" prop="introduction">
-            <el-input v-model="form.introduction" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="门店手机" prop="phone">
-            <el-input v-model="form.phone" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="门店地址" prop="address">
-            <el-input v-model="form.address" style="width: 370px;" />
-            <el-button  size="medium" type="primary" @click="getL(form.address)">获取经纬度</el-button>
-          </el-form-item>
-          <el-form-item label="门店logo" prop="image">
-            <MaterialList v-model="form.imageArr" style="width: 370px" type="image" :num="1" :width="150" :height="150" />
-          </el-form-item>
-          <el-form-item label="纬度" prop="latitude">
-            <el-input v-model="form.latitude" style="width: 370px;" :disabled="true" />
-          </el-form-item>
-          <el-form-item label="经度" prop="longitude">
-            <el-input v-model="form.longitude" style="width: 370px;" :disabled="true" />
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="商家名称" prop="name">
+                <el-input v-model="form.name" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="主营项目" prop="bscope">
+                <el-input v-model="form.bscope" type="textarea" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="商家简介" prop="introduction">
+                <el-input v-model="form.introduction" type="textarea" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="联系人" prop="contact">
+                <el-input v-model="form.contact" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="手机号" prop="phone">
+                <el-input v-model="form.phone" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="商家地址" prop="addrArr">
+                <el-cascader
+                    style="width: 100%"
+                    v-model="form.addrArr"
+                    :options="depts"
+                    :props="{ value: 'name'}"
+                    @change="handleChange"></el-cascader>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="" prop="detailedAddress" label-width="0">
+                <el-input v-model="form.detailedAddress" placeholder="详细地址"/>
+              </el-form-item>
+            </el-col>
+            <el-col :span="4">
+              <el-button  size="mini" type="primary" @click="getL(form.addrArr, form.detailedAddress)">获取经纬度</el-button>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="纬度" prop="latitude">
+                <el-input v-model="form.latitude" :disabled="true" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="经度" prop="longitude">
+                <el-input v-model="form.longitude" :disabled="true" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="营业执照" prop="licenseurl">
+                <MaterialList v-model="form.licenseArr" type="image" :num="1" :width="80" :height="80" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="食品经营许可证" prop="bpermissionurl">
+                <MaterialList v-model="form.bpermissionArr" type="image" :num="1" :width="80" :height="80" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="法人身份证正面" prop="idcardfronturl">
+                <MaterialList v-model="form.idcardfrontArr" type="image" :num="1" :width="80" :height="80" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="法人身份证反面" prop="idcardbackurl">
+                <MaterialList v-model="form.idcardbackArr" type="image" :num="1" :width="80" :height="80" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+
+
+
+          <!-- <el-form-item label="商家logo" prop="image">
+            <MaterialList v-model="form.imageArr" type="image" :num="1" :width="80" :height="80" />
           </el-form-item>
           <el-form-item label="核销时效" prop="validTime">
             <el-date-picker
               @change="getTimeT"
-              style="width: 370px;"
               v-model="form.validTimeArr"
               type="daterange"
               range-separator="-"
@@ -43,7 +114,6 @@
           <el-form-item label="营业时间" prop="dayTime">
             <el-time-picker
               @change="getTime"
-              style="width: 370px;"
               is-range
               v-model="form.dayTimeArr"
               range-separator="-"
@@ -57,7 +127,7 @@
               <el-radio :label="1">显示</el-radio>
               <el-radio :label="0">隐藏</el-radio>
             </el-radio-group>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button type="text" @click="crud.cancelCU">取消</el-button>
@@ -68,10 +138,10 @@
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
         <el-table-column v-if="columns.visible('id')" prop="id" label="id" width="50" />
-        <el-table-column v-if="columns.visible('name')" prop="name" label="门店名称" />
-        <el-table-column v-if="columns.visible('phone')" prop="phone" label="门店电话" />
+        <el-table-column v-if="columns.visible('name')" prop="name" label="商家名称" />
+        <el-table-column v-if="columns.visible('phone')" prop="phone" label="商家电话" />
         <el-table-column v-if="columns.visible('address')" prop="address" label="地址" />
-        <el-table-column v-if="columns.visible('image')" prop="image" label="门店logo" >
+        <el-table-column v-if="columns.visible('image')" prop="image" label="商家logo" >
           <template slot-scope="scope">
             <a :href="scope.row.image" style="color: #42b983" target="_blank"><img :src="scope.row.image" alt="点击打开" class="el-avatar"></a>
           </template>
@@ -110,10 +180,11 @@
   import pagination from '@crud/Pagination'
   import MaterialList from '@/components/material'
   import { parseTime } from '@/utils/index'
+  import { getDepts } from '@/api/system/dept'
 
   // crud交由presenter持有
-  const defaultCrud = CRUD({ title: '门店', url: 'api/yxSystemStore', sort: 'id,desc', crudMethod: { ...crudYxSystemStore }})
-  const defaultForm = { id: null, name: null, introduction: null, phone: null, address: null, detailedAddress: null, image: null, latitude:
+  const defaultCrud = CRUD({ title: '商家', url: 'api/yxSystemStore', sort: 'id,desc', crudMethod: { ...crudYxSystemStore }})
+  const defaultForm = { id: null, name: null, introduction: null, contact: null, phone: null, addrArr: [], address: null, detailedAddress: null, image: null, latitude:
   null, longitude: null, validTime: null, dayTime: null, addTime: null, isShow: 1, imageArr: [], validTimeArr: [],  dayTimeArr: [new Date(),new Date()] }
   export default {
     name: 'YxSystemStore',
@@ -121,6 +192,7 @@
     mixins: [presenter(defaultCrud), header(), form(defaultForm), crud()],
     data() {
       return {
+        depts: [],
         permission: {
           add: ['admin', 'yxSystemStore:add'],
           edit: ['admin', 'yxSystemStore:edit'],
@@ -128,17 +200,30 @@
         },
         rules: {
           name: [
-            { required: true, message: '门店名称不能为空', trigger: 'blur' }
+            { required: true, message: '商家名称不能为空', trigger: 'blur' }
+          ],
+          bscope: [
+            { required: true, message: '主营项目不能为空', trigger: 'blur' }
           ],
           introduction: [
             { required: true, message: '简介不能为空', trigger: 'blur' }
           ],
+          contact: [
+            { required: true, message: '联系人不能为空', trigger: 'blur' }
+          ],
           phone: [
-            { required: true, message: '手机号码不能为空', trigger: 'blur' }
+            { required: true, message: '手机号不能为空', trigger: 'blur' }
           ],
-          address: [
-            { required: true, message: '省市区不能为空', trigger: 'blur' }
+          addrArr: [
+            { required: true, message: '省市区不能为空', trigger: 'change' }
           ],
+          detailedAddress: [
+            { required: true, message: '详细地址不能为空', trigger: 'blur' }
+          ],
+          bpermissionurl: [
+            { required: true, message: '食品许可证不能为空', trigger: 'blur' }
+          ],
+          // licenseurl: [],
           latitude: [
             { required: true, message: '纬度不能为空', trigger: 'blur' }
           ],
@@ -152,6 +237,11 @@
         }
     },
     methods: {
+      [CRUD.HOOK.beforeToCU]() {
+        getDepts({ enabled: true }).then(res => {
+          this.depts = res.content[0].children
+        })
+      },
       // 获取数据前设置好接口地址
       [CRUD.HOOK.beforeRefresh]() {
         return true
@@ -177,14 +267,28 @@
         this.form.validTimeEnd = t[1]
         this.form.validTime = parseTime(t[0],'{y}-{m}-{d}') + ' - ' + parseTime(t[1],'{y}-{m}-{d}')
       },
-      getL(addr) {
-        crudYxSystemStore.getL({addr}).then(res => {
+      getL(area, addr) {
+        console.log(area,'kkkkkkk')
+        this.yanzheng()
+        this.form.address = area.join('')
+        crudYxSystemStore.getL({ addr: `${this.form.address}${this.form.detailedAddress}` }).then(res => {
           this.form.latitude = res.result.location.lat
           this.form.longitude = res.result.location.lng
 
           //console.log(this.form)
         })
-      }
+      },
+      yanzheng() {
+        if (this.form.addrArr.length === 0 || !this.form.detailedAddress) {
+          this.$notify({
+            title: '地区和详细地址不能为空',
+            type: 'warning'
+          })
+          return false
+        }
+        return true
+      },
+      handleChange() {}
     }
   }
 </script>
