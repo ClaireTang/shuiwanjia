@@ -101,53 +101,90 @@
           <!-- <el-form-item label="商家logo" prop="image">
             <MaterialList v-model="form.imageArr" type="image" :num="1" :width="80" :height="80" />
           </el-form-item>
-          <el-form-item label="核销时效" prop="validTime">
-            <el-date-picker
-              @change="getTimeT"
-              v-model="form.validTimeArr"
-              type="daterange"
-              range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="营业时间" prop="dayTime">
-            <el-time-picker
-              @change="getTime"
-              is-range
-              v-model="form.dayTimeArr"
-              range-separator="-"
-              start-placeholder="开始时间"
-              end-placeholder="结束时间"
-              placeholder="选择时间范围">
-            </el-time-picker>
-          </el-form-item>
+          
+          
           <el-form-item label="是否显示" prop="isShow">
             <el-radio-group v-model="form.isShow" style="width: 178px">
               <el-radio :label="1">显示</el-radio>
               <el-radio :label="0">隐藏</el-radio>
             </el-radio-group>
           </el-form-item> -->
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="核销时效" prop="validTime">
+                <el-date-picker
+                  style="width: 100%"
+                  @change="getTimeT"
+                  v-model="form.validTimeArr"
+                  type="daterange"
+                  range-separator="-"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期">
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="营业时间" prop="dayTime">
+                <el-time-picker
+                  style="width: 100%"
+                  @change="getTime"
+                  is-range
+                  v-model="form.dayTimeArr"
+                  range-separator="-"
+                  start-placeholder="开始时间"
+                  end-placeholder="结束时间"
+                  placeholder="选择时间范围">
+                </el-time-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          
+          
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button type="text" @click="crud.cancelCU">取消</el-button>
           <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
         </div>
       </el-dialog>
+      <!-- 审核 -->
+      <el-dialog
+        title="提示"
+        :visible.sync="dialogVisible"
+        width="30%"
+        :before-close="handleClose">
+        <span>此处展示详情</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">不通过</el-button>
+          <el-button type="primary" @click="operOk()">通过</el-button>
+        </span>
+      </el-dialog>
       <!--表格渲染-->
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
-        <el-table-column v-if="columns.visible('id')" prop="id" label="id" width="50" />
+        <!-- <el-table-column v-if="columns.visible('id')" prop="id" label="id" width="50" /> -->
         <el-table-column v-if="columns.visible('name')" prop="name" label="商家名称" />
         <el-table-column v-if="columns.visible('phone')" prop="phone" label="商家电话" />
-        <el-table-column v-if="columns.visible('address')" prop="address" label="地址" />
-        <el-table-column v-if="columns.visible('image')" prop="image" label="商家logo" >
+        <el-table-column v-if="columns.visible('address')" label="地址" >
+          <template slot-scope="scope">
+            {{ scope.row.address}}{{scope.row.detailedAddress}}
+          </template>
+        </el-table-column>
+        <el-table-column v-if="columns.visible('idcardfronturl')" prop="idcardfronturl" label="身份证正面" >
+          <template slot-scope="scope">
+            <a :href="scope.row.idcardfronturl" style="color: #42b983" target="_blank"><img :src="scope.row.idcardfronturl" alt="点击打开" class="el-avatar"></a>
+          </template>
+        </el-table-column>
+        <el-table-column v-if="columns.visible('status')" prop="status" label="审核状态" >
+          <template slot-scope="scope">
+            {{ formatStatus(scope.row.status) }}
+          </template>
+        </el-table-column>
+        <!-- <el-table-column v-if="columns.visible('image')" prop="image" label="商家logo" >
           <template slot-scope="scope">
             <a :href="scope.row.image" style="color: #42b983" target="_blank"><img :src="scope.row.image" alt="点击打开" class="el-avatar"></a>
           </template>
         </el-table-column>
         <el-table-column v-if="columns.visible('validTime')" prop="validTime" label="核销有效日期" />
-        <el-table-column v-if="columns.visible('dayTime')" prop="dayTime" label="营业时间" />
         <el-table-column v-if="columns.visible('isShow')" prop="isShow" label="是否显示" >
           <template slot-scope="scope">
             <div>
@@ -155,9 +192,11 @@
               <el-tag v-else :type=" 'info' ">隐藏</el-tag>
             </div>
           </template>
-        </el-table-column>
+        </el-table-column> -->
+        <el-table-column v-if="columns.visible('dayTime')" prop="dayTime" label="营业时间" />
         <el-table-column v-permission="['admin','yxSystemStore:edit','yxSystemStore:del']" label="操作" width="150px" align="center">
           <template slot-scope="scope">
+            <el-button v-if="scope.row.status===0" size="mini" type="primary" icon="el-icon-edit" @click="operate(scope.row)" ></el-button>
             <udOperation
               :data="scope.row"
               :permission="permission"
@@ -192,6 +231,7 @@
     mixins: [presenter(defaultCrud), header(), form(defaultForm), crud()],
     data() {
       return {
+        dialogVisible: false,
         depts: [],
         permission: {
           add: ['admin', 'yxSystemStore:add'],
@@ -288,7 +328,29 @@
         }
         return true
       },
-      handleChange() {}
+      handleChange() {},
+      formatStatus(status) {
+        switch (status) {
+          case 0 : return '未审核';
+          case -1 : return '未通过';
+          case 1 : return '通过';
+        }
+      },
+      operate(data) {
+        this.dialogVisible = true
+        console.log(data,'ooooo')
+      },
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      },
+      operOk() {
+        // 调接口传1和-1
+        this.dialogVisible = false
+      }
     }
   }
 </script>
