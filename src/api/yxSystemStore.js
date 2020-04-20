@@ -46,4 +46,18 @@ export function edit(data) {
   })
 }
 
-export default { getL, add, edit, del, get, getAll }
+export function audit(data) {
+  return request({
+    url: 'api/yxSystemStore/audit',
+    method: 'post',
+    data
+  })
+}
+
+export function getCity() {
+  return request({
+    url: 'api/yxSystemStore/citys',
+    method: 'get'
+  })
+}
+export default { getL, add, edit, del, get, getAll, audit, getCity }
