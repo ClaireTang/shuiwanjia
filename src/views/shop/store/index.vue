@@ -142,7 +142,7 @@
 
       <!--表格渲染-->
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
-        <el-table-column type="selection" width="30" />
+        <el-table-column type="selection" width="50" />
         <el-table-column type="expand" width="30">
           <template slot-scope="scope">
             <el-form label-position="left" inline class="demo-table-expand">
