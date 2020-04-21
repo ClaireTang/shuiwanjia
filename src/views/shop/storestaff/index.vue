@@ -98,7 +98,7 @@ import crudYxSystemStore from '@/api/yxSystemStore'
 
 // crud交由presenter持有
 const defaultCrud = CRUD({ title: '门店店员', url: 'api/yxSystemStoreStaff', sort: 'id,desc', crudMethod: { ...crudYxSystemStoreStaff }})
-const defaultForm = { user: {uid: null,nickname: null,avatar: null}, id: null, uid: null, avatar: null, storeId: null, staffName: null, phone: null, verifyStatus: 1, status: null, addTime: null, nickname: null, storeName: null }
+const defaultForm = { user: {uid: null,nickname: null,avatar: null}, id: null, uid: null, avatar: null, storeId: null, staffName: null, phone: null, verifyStatus: 1, status: null, addTime: null, nickname: null, storeName: null, username: '', openid: '', password: '' }
 export default {
   name: 'YxSystemStoreStaff',
   components: { pagination, crudOperation, rrOperation, udOperation, cuser },

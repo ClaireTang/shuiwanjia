@@ -17,7 +17,7 @@
     <div v-else tabindex="0" class="el-upload el-upload--picture-card"  @click="toSelete">
       <i class="el-icon-plus" />
     </div>
-    <el-dialog :visible.sync="dialog" append-to-body width="60%" title="商城会员">
+    <el-dialog :visible.sync="dialog" append-to-body width="60%" title="商城用户">
       <div class="app-container">
       <!--工具栏-->
       <div class="head-container">
