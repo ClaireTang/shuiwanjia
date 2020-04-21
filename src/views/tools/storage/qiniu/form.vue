@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="dialog" :close-on-click-modal="false" title="七牛云配置" append-to-body width="580px">
+  <el-dialog :visible.sync="dialog" :close-on-click-modal="false" title="阿里云配置" append-to-body width="580px">
     <el-form ref="form" :model="form" :rules="rules" style="margin-top: 6px;" size="small" label-width="110px">
       <el-form-item label="Access Key" prop="accessKey">
         <el-input v-model="form.accessKey" style="width: 95%" placeholder="accessKey，在安全中心，秘钥管理中查看" />
@@ -11,7 +11,7 @@
         <el-input v-model="form.bucket" style="width: 95%;" placeholder="存储空间名称作为唯一的 Bucket 识别符" />
       </el-form-item>
       <el-form-item label="外链域名" prop="host">
-        <el-input v-model="form.host" style="width: 95%;" placeholder="外链域名，可自定义，需在七牛云绑定" />
+        <el-input v-model="form.host" style="width: 95%;" placeholder="外链域名，可自定义，需在阿里云绑定" />
       </el-form-item>
       <el-form-item label="存储区域" prop="port">
         <el-select v-model="form.zone" placeholder="请选择存储区域">
