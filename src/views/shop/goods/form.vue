@@ -1,84 +1,152 @@
 <template>
   <el-dialog :append-to-body="true" :close-on-click-modal="false" :before-close="cancel" :visible.sync="dialog" :title="isAdd ? '新增' : '编辑'" width="900px">
-    <el-form ref="form" :model="form" :inline="true" :rules="rules" size="small" label-width="80px">
-      <el-form-item style="margin-bottom: 0px;" label="商品分类">
-        <treeselect v-model="form.storeCategory.id" :options="cates" style="width: 370px;" placeholder="选择商品分类" />
+    <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="商品名称" prop="storeName">
+            <el-input v-model="form.storeName" />
+          </el-form-item>
+         </el-col>
+         <el-col :span="12">
+          <el-form-item label="单位名" prop="unitName">
+            <el-input v-model="form.unitName" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="商品分类" prop="cateId">
+            <treeselect v-model="form.cateId" :options="cates" placeholder="选择商品分类" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="关键字" prop="keyword">
+            <el-input v-model="form.keyword" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="6">
+          <el-form-item label="商品图片" prop="image">
+            <MaterialList v-model="form.imageArr" type="image" :num="1" :width="80" :height="80" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="18">
+          <el-form-item label="轮播图" prop="sliderImage">
+            <MaterialList v-model="form.sliderImageArr" type="image" :num="4" :width="80" :height="80" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="商品简介" prop="storeInfo">
+            <el-input v-model="form.storeInfo" type="textarea" autosize />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="产品条码">
+            <el-input v-model="form.barCode" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+
+      <el-form-item label="产品描述" prop="description">
+        <editor  v-model="form.description" />
       </el-form-item>
-      <el-form-item label="商品名称">
-        <el-input v-model="form.storeName" style="width: 500px;" />
-      </el-form-item>
-      <el-form-item label="关键字">
-        <el-input v-model="form.keyword" style="width: 500px;" />
-      </el-form-item>
-      <el-form-item label="单位名">
-        <el-input v-model="form.unitName" style="width: 320px;" />
-      </el-form-item>
-      <el-form-item label="产品条码">
-        <el-input v-model="form.barCode" style="width: 320px;" />
-      </el-form-item>
-      <el-form-item label="商品图片">
-        <MaterialList v-model="form.imageArr" style="width: 500px" type="image" :num="1" :width="150" :height="150" />
-      </el-form-item>
-      <el-form-item label="轮播图">
-        <MaterialList v-model="form.sliderImageArr" style="width: 500px" type="image" :num="4" :width="150" :height="150" />
-      </el-form-item>
-      <el-form-item label="商品简介">
-        <el-input v-model="form.storeInfo" style="width: 500px;" rows="5" type="textarea" />
-      </el-form-item>
-      <el-form-item label="产品描述">
-        <editor v-model="form.description" />
-      </el-form-item>
-      <el-form-item label="商品价格">
-        <el-input v-model="form.price" />
-      </el-form-item>
-      <el-form-item label="市场价">
-        <el-input v-model="form.otPrice" />
-      </el-form-item>
-      <el-form-item label="成本价">
-        <el-input v-model="form.cost" />
-      </el-form-item>
-      <el-form-item label="邮费">
-        <el-input v-model="form.postage" />
-      </el-form-item>
-      <el-form-item label="排序">
-        <el-input v-model="form.sort" />
-      </el-form-item>
-      <el-form-item label="销量">
-        <el-input v-model="form.sales" />
-      </el-form-item>
-      <el-form-item label="库存">
-        <el-input v-model="form.stock" />
-      </el-form-item>
-      <el-form-item label="热卖单品">
-        <el-radio v-model="form.isHot" :label="1">是</el-radio>
-        <el-radio v-model="form.isHot" :label="0" style="width: 200px;">否</el-radio>
-      </el-form-item>
-      <el-form-item label="促销单品">
-        <el-radio v-model="form.isBenefit" :label="1">是</el-radio>
-        <el-radio v-model="form.isBenefit" :label="0" style="width: 200px;">否</el-radio>
-      </el-form-item>
-      <el-form-item label="精品推荐">
-        <el-radio v-model="form.isBest" :label="1">是</el-radio>
-        <el-radio v-model="form.isBest" :label="0" style="width: 200px;">否</el-radio>
-      </el-form-item>
-      <el-form-item label="首发新品">
-        <el-radio v-model="form.isNew" :label="1">是</el-radio>
-        <el-radio v-model="form.isNew" :label="0" style="width: 200px;">否</el-radio>
-      </el-form-item>
-      <el-form-item label="是否包邮">
-        <el-radio v-model="form.isPostage" :label="1">是</el-radio>
-        <el-radio v-model="form.isPostage" :label="0" style="width: 200px;">否</el-radio>
-      </el-form-item>
-      <el-form-item label="优品推荐">
-        <el-radio v-model="form.isGood" :label="1">是</el-radio>
-        <el-radio v-model="form.isGood" :label="0" style="width: 200px;">否</el-radio>
-      </el-form-item>
-      <el-form-item label="获得积分">
-        <el-input v-model="form.giveIntegral" />
-      </el-form-item>
-      <el-form-item label="虚拟销量">
-        <el-input v-model="form.ficti" />
-      </el-form-item>
+      <el-row>
+        <el-col :span="8">
+          <el-form-item label="商品价格">
+            <el-input v-model="form.price" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="市场价">
+            <el-input v-model="form.otPrice" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="成本价">
+            <el-input v-model="form.cost" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="8">
+          <el-form-item label="邮费">
+            <el-input v-model="form.postage" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="排序">
+            <el-input v-model="form.sort" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="获得积分">
+            <el-input v-model="form.giveIntegral" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="8">
+          <el-form-item label="销量">
+            <el-input v-model="form.sales" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="虚拟销量">
+            <el-input v-model="form.ficti" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="库存">
+            <el-input v-model="form.stock" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="8">
+          <el-form-item label="热卖单品">
+            <el-radio v-model="form.isHot" :label="1">是</el-radio>
+            <el-radio v-model="form.isHot" :label="0">否</el-radio>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="促销单品">
+            <el-radio v-model="form.isBenefit" :label="1">是</el-radio>
+            <el-radio v-model="form.isBenefit" :label="0">否</el-radio>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="精品推荐">
+            <el-radio v-model="form.isBest" :label="1">是</el-radio>
+            <el-radio v-model="form.isBest" :label="0">否</el-radio>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="8">
+          <el-form-item label="首发新品">
+            <el-radio v-model="form.isNew" :label="1">是</el-radio>
+            <el-radio v-model="form.isNew" :label="0">否</el-radio>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="是否包邮">
+            <el-radio v-model="form.isPostage" :label="1">是</el-radio>
+            <el-radio v-model="form.isPostage" :label="0">否</el-radio>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="优品推荐">
+            <el-radio v-model="form.isGood" :label="1">是</el-radio>
+            <el-radio v-model="form.isGood" :label="0">否</el-radio>
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="text" @click="cancel">取消</el-button>
@@ -118,8 +186,8 @@ export default {
         storeInfo: '',
         keyword: '',
         barCode: '',
-        cateId: 1,
-        storeCategory: {id:null},
+        cateId: null,
+        // storeCategory: {id:null},
         price: 0,
         vipPrice: 0,
         otPrice: 0,
@@ -149,6 +217,30 @@ export default {
         soureLink: ''
       },
       rules: {
+        storeName: [
+          { required: true, message: '商品名不能为空', trigger: 'blur' }
+        ],
+        unitName: [
+          { required: true, message: '单位不能为空', trigger: 'blur' }
+        ],
+        cateId: [
+          { required: true, message: '分类不能为空', trigger: 'blur' }
+        ],
+        keyword: [
+          { required: true, message: '关键字不能为空', trigger: 'blur' }
+        ],
+        storeInfo:  [
+          { required: true, message: '商品简介', trigger: 'blur' }
+        ],
+        description: [
+          { required: true, message: '商品描述', trigger: 'blur' }
+        ],
+        sliderImage: [
+          { required: true, message: '上传轮播图', trigger: 'blur' }
+        ],
+        image: [
+          { required: true, message: '上传商品图', trigger: 'blur' }
+        ],
       }
     }
   },
@@ -218,8 +310,8 @@ export default {
         storeInfo: '',
         keyword: '',
         barCode: '',
-        cateId: 1,
-        storeCategory: {},
+        cateId: null,
+        // storeCategory: {},
         price: 0,
         vipPrice: 0,
         otPrice: 0,

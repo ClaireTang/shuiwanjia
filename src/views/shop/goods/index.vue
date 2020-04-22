@@ -41,7 +41,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="storeName" label="商品名称" />
-      <el-table-column prop="storeCategory.cateName" label="分类名称" />
+      <el-table-column prop="cateName" label="分类名称" />
       <el-table-column prop="price" label="商品价格" />
       <el-table-column prop="sales" label="销量" />
       <el-table-column prop="stock" label="库存" />
@@ -53,14 +53,15 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="205px" align="center">
+      <el-table-column v-if="checkPermission(['admin','YXSTOREPRODUCT_ALL','YXSTOREPRODUCT_EDIT','YXSTOREPRODUCT_DELETE'])" label="操作" width="500px" align="center">
         <template slot-scope="scope">
           <el-button slot="reference" type="danger" size="mini" @click="attr(scope.row)">规格属性</el-button>
-          <el-dropdown size="mini" split-button type="primary" trigger="click">
+          <el-dropdown size="mini" split-button type="primary" >
             操作
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
                 <el-button
+                  v-permission="['admin','YXSTOREPRODUCT_ALL','YXSTOREPRODUCT_EDIT']"
                   size="mini"
                   type="primary"
                   icon="el-icon-edit"
@@ -69,6 +70,7 @@
               </el-dropdown-item>
               <el-dropdown-item>
                 <el-popover
+                  v-permission="['admin','YXSTOREPRODUCT_ALL','YXSTOREPRODUCT_DELETE']"
                   :ref="scope.row.id"
                   placement="top"
                   width="180"
@@ -208,6 +210,7 @@ export default {
       _this.form = {
         id: data.id,
         merId: data.merId,
+        cateId: data.cateId,
         image: data.image,
         sliderImage: data.sliderImage,
         imageArr: data.image.split(','),
@@ -216,7 +219,7 @@ export default {
         storeInfo: data.storeInfo,
         keyword: data.keyword,
         barCode: data.barCode,
-        storeCategory: data.storeCategory || {id:null},
+        // storeCategory: data.storeCategory || {id:null},
         price: data.price,
         vipPrice: data.vipPrice,
         otPrice: data.otPrice,
