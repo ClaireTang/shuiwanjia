@@ -3,7 +3,16 @@
     <!--工具栏-->
     <div class="head-container">
       <!-- 新增 -->
-
+      <div style="display: inline-block;margin: 0px 2px;">
+        <el-button
+          v-permission="['admin','YXSYSTEMUSERTASK_ALL','YXSYSTEMUSERTASK_CREATE']"
+          class="filter-item"
+          size="mini"
+          type="primary"
+          icon="el-icon-plus"
+          @click="add"
+        >新增</el-button>
+      </div>
     </div>
     <!--表单组件-->
     <eForm ref="form" :is-add="isAdd" />
@@ -21,6 +30,19 @@
       <el-table-column v-if="checkPermission(['admin','YXSYSTEMUSERTASK_ALL','YXSYSTEMUSERTASK_EDIT','YXSYSTEMUSERTASK_DELETE'])" label="操作" width="150px" align="center">
         <template slot-scope="scope">
           <el-button v-permission="['admin','YXSYSTEMUSERTASK_ALL','YXSYSTEMUSERTASK_EDIT']" size="mini" type="primary" icon="el-icon-edit" @click="edit(scope.row)" />
+          <el-popover
+            :ref="scope.row.id"
+            v-permission="['admin','YXSYSTEMUSERTASK_ALL','YXSYSTEMUSERTASK_DELETE']"
+            placement="top"
+            width="180"
+          >
+            <p>确定删除本条数据吗？</p>
+            <div style="text-align: right; margin: 0">
+              <el-button size="mini" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>
+              <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.row.id)">确定</el-button>
+            </div>
+            <el-button slot="reference" type="danger" icon="el-icon-delete" size="mini" />
+          </el-popover>
         </template>
       </el-table-column>
     </el-table>

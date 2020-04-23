@@ -11,6 +11,7 @@
       <!-- 新增 -->
       <div style="display: inline-block;margin: 0px 2px;">
         <el-button
+          v-permission="['admin','YXSTOREPRODUCT_ALL','YXSTOREPRODUCT_CREATE']"
           class="filter-item"
           size="mini"
           type="primary"

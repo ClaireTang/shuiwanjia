@@ -88,9 +88,9 @@ export default {
         ]
       },
       permission: {
-        add: ['admin', 'YXSTORECATEGORY_CREATE'],
-        edit: ['admin', 'YXSTORECATEGORY_EDIT'],
-        del: ['admin', 'YXSTORECATEGORY_DELETE']
+        add: ['admin', 'cate:add'],
+        edit: ['admin', 'cate:edit'],
+        del: ['admin', 'cate:del']
       },
       enabledTypeOptions: [
         { key: 'true', display_name: '正常' },

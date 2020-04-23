@@ -171,7 +171,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            v-permission="['admin','user:edit','user:del']"
+            v-permission="['admin','yxSystemUser:edit','yxSystemUser:del']"
             label="操作"
             width="125"
             align="center"
@@ -234,9 +234,9 @@ export default {
       deptName: '', depts: [], deptDatas: [], jobs: [], level: 3, roles: [],
       defaultProps: { children: 'children', label: 'name' },
       permission: {
-        add: ['admin', 'user:add'],
-        edit: ['admin', 'user:edit'],
-        del: ['admin', 'user:del']
+        add: ['admin', 'yxSystemUser:add'],
+        edit: ['admin', 'yxSystemUser:edit'],
+        del: ['admin', 'yxSystemUser:del']
       },
       enabledTypeOptions: [
         { key: 'true', display_name: '激活' },
