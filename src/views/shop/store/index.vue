@@ -72,32 +72,36 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="12">
+            <el-col :span="8">
+              <el-form-item label="商家logo" prop="image">
+                <MaterialList v-model="form.imageArr" type="image" :num="1" :width="80" :height="80" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
               <el-form-item label="营业执照" prop="licenseurl">
                 <MaterialList v-model="form.licenseArr" type="image" :num="1" :width="80" :height="80" />
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+
+            <el-col :span="8">
               <el-form-item label="食品经营许可证" prop="bpermissionurl">
                 <MaterialList v-model="form.bpermissionArr" type="image" :num="1" :width="80" :height="80" />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="12">
+            <el-col :span="8">
               <el-form-item label="法人身份证正面" prop="idcardfronturl">
                 <MaterialList v-model="form.idcardfrontArr" type="image" :num="1" :width="80" :height="80" />
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="8">
               <el-form-item label="法人身份证反面" prop="idcardbackurl">
                 <MaterialList v-model="form.idcardbackArr" type="image" :num="1" :width="80" :height="80" />
               </el-form-item>
             </el-col>
           </el-row>
-          <!-- <el-form-item label="商家logo" prop="image">
-            <MaterialList v-model="form.imageArr" type="image" :num="1" :width="80" :height="80" />
-          </el-form-item>
+          <!--
           <el-form-item label="是否显示" prop="isShow">
             <el-radio-group v-model="form.isShow" style="width: 178px">
               <el-radio :label="1">显示</el-radio>
@@ -147,62 +151,103 @@
           <template slot-scope="scope">
             <el-form label-position="left" inline class="demo-table-expand">
               <el-row>
-                <el-col :span="12">
+                <el-col :span="8">
                   <el-form-item label="商家名称">
                     <span>{{ scope.row.name }}</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="12">
-                  <el-form-item label="地址">
-                    <span>{{ scope.row.address }}{{scope.row.detailedAddress}}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12">
-                  <el-form-item label="主营项目">
-                    <span>{{ scope.row.bscope }}</span>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                  <el-form-item label="简介">
-                    <span>{{ scope.row.introduction }}</span>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12">
+                <el-col :span="8">
                   <el-form-item label="联系人">
                     <span>{{ scope.row.contact }}</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="8">
                   <el-form-item label="电话">
                     <span>{{ scope.row.phone }}</span>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
-                <el-col :span="12">
-                  <el-form-item label="营业执照">
-                    <img :src="scope.row.licenseurl" width="100"></img>
+                <el-col :span="8">
+                  <el-form-item label="地址">
+                    <span>{{ scope.row.address }}{{scope.row.detailedAddress}}</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="12">
-                  <el-form-item label="食品经营许可证">
-                    <img :src="scope.row.bpermissionurl" width="100"></img>
+                <el-col :span="8">
+                  <el-form-item label="主营项目">
+                    <span>{{ scope.row.bscope }}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="简介">
+                    <span>{{ scope.row.introduction }}</span>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
-                <el-col :span="12">
-                  <el-form-item label="法人身份证正面">
-                    <img :src="scope.row.idcardfronturl" width="100"></img>
+
+              </el-row>
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label="商家logo">
+                    <!-- <img :src="scope.row.image" width="100"></img> -->
+                    <el-image
+                      style="width: 100px"
+                      :src="scope.row.image"
+                      fit="contain"
+                      :preview-src-list="[scope.row.image]"
+                      :z-index=1002
+                    />
                   </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="8">
+                  <el-form-item label="营业执照">
+                    <!-- <img :src="scope.row.licenseurl" width="100"></img> -->
+                    <el-image
+                      style="width: 100px"
+                      :src="scope.row.licenseurl"
+                      fit="contain"
+                      :preview-src-list="[scope.row.licenseurl]"
+                      :z-index=1002
+                    />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="食品经营许可证">
+                    <!-- <img :src="scope.row.bpermissionurl" width="100"></img> -->
+                    <el-image
+                      style="width: 100px"
+                      :src="scope.row.bpermissionurl"
+                      fit="contain"
+                      :preview-src-list="[scope.row.bpermissionurl]"
+                      :z-index=1002
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label="法人身份证正面">
+                    <!-- <img :src="scope.row.idcardfronturl" width="100"></img> -->
+                    <el-image
+                      style="width: 100px"
+                      :src="scope.row.idcardfronturl"
+                      fit="contain"
+                      :preview-src-list="[scope.row.idcardfronturl]"
+                      :z-index=1002
+                    />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
                   <el-form-item label="法人身份证反面">
-                    <img :src="scope.row.idcardbackurl" width="100"></img>
+                    <!-- <img :src="scope.row.idcardbackurl" width="100"></img> -->
+                    <el-image
+                      style="width: 100px"
+                      :src="scope.row.idcardbackurl"
+                      fit="contain"
+                      :preview-src-list="[scope.row.idcardbackurl]"
+                      :z-index=1002
+                    />
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -313,6 +358,9 @@
           ],
           detailedAddress: [
             { required: true, message: '详细地址不能为空', trigger: 'blur' }
+          ],
+          image: [
+            { required: true, message: 'logo不能为空', trigger: 'blur' }
           ],
           licenseurl: [
             { required: true, message: '营业执照不能为空', trigger: 'blur' }
